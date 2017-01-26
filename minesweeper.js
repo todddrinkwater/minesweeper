@@ -57,25 +57,58 @@ var board = {
 
 };
 
-function startGame (cells) {
-  for (var i = 0; i > board.cells.length; i++){
-    console.log("game starting");
-        console.log(countSurroundingMines(board.cells[i]));
+
+function startGame () {
+  for (var i = 0; i < board.cells.length; i++){
         board.cells[i].surroundingMines = countSurroundingMines(board.cells[i]);
-  };
+  }
   // Don't remove this function call: it makes the game work!
   lib.initBoard()
+
+  document.addEventListener("contextmenu", function(){
+    checkForWin()
+  })
+  document.addEventListener("click", function(){
+    checkForWin()
+  })
+};
+
+var markAndMine = function() {
+  for (var k = 0; k < board.cells.length; k++){
+    if (board.cells[k].isMine === true && board.cells[k].isMarked === false){
+      return;
+    }
+    else {
+      return true;
+    }
+  }
 }
+
+var markAndHidden = function() {
+  for(var l = 0; l < board.cells.length; l++){
+    if (board.cells[l].isMarked === true && board.cells[l].hidden === true){
+      return;
+    }
+    else {
+      return true;
+    }
+  }
+}
+
 
 // Define this function to look for a win condition:
 //
 // 1. Are all of the cells that are NOT mines visible?
 // 2. Are all of the mines marked?
 function checkForWin () {
-
+  if (markAndMine() === true && markAndHidden() === true){
   // You can use this function call to declare a winner (once you've
   // detected that they've won, that is!)
-  //   lib.displayMessage('You win!')
+  lib.displayMessage('You win!')
+}
+else {
+  return;
+}
 }
 
 // Define this function to count the number of mines around the cell
@@ -92,12 +125,21 @@ function checkForWin () {
 function countSurroundingMines (cell) {
   var count = 0;
   var surrounding = lib.getSurroundingCells(cell.row, cell.col);
+  for (j = 0; j < surrounding.length; j++){
+    if (surrounding[j].isMine){
+      count += 1;
+    }
+  }
+  return count;
+};
 
-    surrounding.forEach(function (cells){
-      if(cells.isMine){
+
+    /* console.log(surrounding);
+    surrounding.forEach(function(cells){
+      if(board.cells.isMine){
         count++;
       }
     })
 
   return count;
-};
+}; */
