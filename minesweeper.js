@@ -72,90 +72,26 @@ function startGame () {
     checkForWin();
   });
 };
-/*
-var markAndMine = function() {
-  for (var k = 0; k < board.cells.length; k++){
-    if (board.cells[k].isMine === true && board.cells[k].isMarked === false){
-      return;
-    }
-    else {
-      return true;
-    }
-  }
-}
 
-
-var markAndHidden = function() {
-  for(var l = 0; l < board.cells.length; l++){
-    if (board.cells[l].isMarked === true && board.cells[l].hidden === false){
-      return;
-    }
-    else {
-      return true;
-    }
-  }
-}
-*/
 
 // Define this function to look for a win condition:
 //
 // 1. Are all of the cells that are NOT mines visible?
 // 2. Are all of the mines marked?
+
 function checkForWin () {
-
-  var numOfMines = 0;
-  var minesFound = 0;
-  var incorrectMine = 0;
-  var cellsRemaining = 0;
-
-// Count number of mines on board
-function mineCount(){
-  for (var a = 0; a < board.cells.length; a++){
-    if(board.cells[a].isMine === true){
-      numOfMines += 1;
+  for( i = 0; i < board.cells.length; i++){
+    if(board.cells[i].isMine === true && board.cells[i].isMarked !== true) {
+      return;
+    }
+    else if(board.cells[i].isMine !== true && board.cells[i].hidden === true){
+      return;
     }
   }
-};
+  lib.displayMessage('You win!')
+}
 
-// Count number of mines found/flagged
 
-function findMine(){
-  for (var b = 0; b < board.cells.length; b++){
-    if((board.cells[b].isMine === true) && (board.cells[b].isMarked === true)){
-      minesFound += 1;
-    }
-  }
-};
-
-// Count number of mines that are incorrectly flagged
-
-function incorrectFlag(){
-  for (var c = 0; c < board.cells.length; c++){
-    if((board.cells[c].isMine === false) && (board.cells[c].isMarked === true)){
-      incorrectMine += 1;
-    }
-  }
-};
-
-// Count the number of cells that haven't been clicked
-
-function checkHiddenCells(){
-  for (var d = 0; d < board.cells.length; d++){
-    if(board.cells[d].hidden === true){
-      cellsRemaining += 1;
-    }
-  }
-};
-
-mineCount();
-findMine();
-incorrectFlag();
-checkHiddenCells();
-
-if( (numOfMines === minesFound) && (incorrectMine === 0) &&  (cellsRemaining === 0) ){
-    lib.displayMessage('You win!')
-  }
-};
 
 // Define this function to count the number of mines around the cell
 // (there could be as many as 8). You don't have to get the surrounding
